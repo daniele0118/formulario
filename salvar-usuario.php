@@ -16,14 +16,12 @@ switch ($_REQUEST["acao"]) {
         $bairro = mysqli_real_escape_string($conn, $_POST["bairro"]);
         $numero = $_POST["numero"];
         $telefone = mysqli_real_escape_string($conn, $_POST["telefone"]);
-        $indicacao = $_POST["indicacao"];
-        $contato = mysqli_real_escape_string($conn, $_POST["contato"]);
         $ativo = $_POST["ativo"];
 
         $sql = "INSERT INTO usuarios (nome, email, senha, data_nasc, tipo_cli, cpf_cnpj, rg, cep, cidade, estado, rua, bairro, numero, 
-                            telefone, indicacao, contato, ativo) 
+                            telefone, ativo) 
                 VALUES ('$nome', '$email', '$senha', '$data_nasc', '$tipo_cli', '$cpf_cnpj', '$rg', '$cep', '$cidade', '$estado', '$rua', '$bairro', '$numero',
-                        '$telefone', '$indicacao', '$contato', '$ativo')";
+                        '$telefone', '$ativo')";
 
         $res = $conn->query($sql);
 
@@ -52,8 +50,6 @@ switch ($_REQUEST["acao"]) {
             $bairro = mysqli_real_escape_string($conn, $_POST["bairro"]);
             $numero = $_POST["numero"];
             $telefone = mysqli_real_escape_string($conn, $_POST["telefone"]);
-            $indicacao = $_POST["indicacao"];
-            $contato = mysqli_real_escape_string($conn, $_POST["contato"]);
             $ativo = $_POST["ativo"];
     
             $sql = "UPDATE usuarios 
@@ -71,8 +67,6 @@ switch ($_REQUEST["acao"]) {
                         bairro='$bairro',
                         numero='$numero',
                         telefone='$telefone',
-                        indicacao='$indicacao',
-                        contato='$contato',
                         ativo='$ativo'
                     WHERE id=$id";
     
@@ -106,6 +100,26 @@ switch ($_REQUEST["acao"]) {
                     echo "<script>location.href='?page=listar';</script>";
                 }
                 break;
+
+                case 'pesquisar':
+                    $id = $_GET["id"];
+                    if (!empty($_GET["id"])) {
+                        $sql = "SELECT FROM usuarios WHERE id=$id";
+    
+                        $res = $conn->query($sql);
+            
+                        if ($res === TRUE) {
+                            echo "<script>alert('Excluído com sucesso');</script>";
+                            echo "<script>location.href='?page=listar';</script>";
+                        } else {
+                            echo "<script>alert('Não foi possível excluir: " . $conn->error . "');</script>";
+                            echo "<script>location.href='?page=listar';</script>";
+                        }
+                    } else {
+                        echo "<script>alert('ID do usuário não especificado');</script>";
+                        echo "<script>location.href='?page=listar';</script>";
+                    }
+                    break;
         }
 
     
